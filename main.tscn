@@ -1,0 +1,152 @@
+[gd_scene load_steps=9 format=3 uid="uid://cusjf4h56xlxi"]
+
+[ext_resource type="Script" path="res://addons/MultiplayCore/MultiPlay.gd" id="1_iqsor"]
+[ext_resource type="Script" path="res://addons/MultiplayCore/net_protocols/ENetProtocol.gd" id="2_tplvf"]
+[ext_resource type="Script" path="res://scripts/NetworkGUIDemo.gd" id="3_witwl"]
+[ext_resource type="Texture2D" uid="uid://dnkhq55h26c0r" path="res://assets/spinner.png" id="4_8cgof"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_67w23"]
+bg_color = Color(0, 0, 0, 0.247059)
+
+[sub_resource type="Animation" id="Animation_osufp"]
+resource_name = "spin"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -6.28319]
+}
+
+[sub_resource type="Animation" id="Animation_cdskr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bhxad"]
+_data = {
+"RESET": SubResource("Animation_cdskr"),
+"spin": SubResource("Animation_osufp")
+}
+
+[node name="Node2D" type="Node2D"]
+
+[node name="MultiPlayCore" type="Node" parent="."]
+script = ExtResource("1_iqsor")
+
+[node name="ENetProtocol" type="Node" parent="MultiPlayCore"]
+script = ExtResource("2_tplvf")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="Control" type="Panel" parent="CanvasLayer" node_paths=PackedStringArray("mpc", "host_btn", "join_btn", "address_bar", "button_layout", "connecting_layout")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_67w23")
+script = ExtResource("3_witwl")
+mpc = NodePath("../../MultiPlayCore")
+host_btn = NodePath("Layout/Buttons/Host")
+join_btn = NodePath("Layout/Buttons/HBoxContainer/Join")
+address_bar = NodePath("Layout/Buttons/HBoxContainer/Address")
+button_layout = NodePath("Layout/Buttons")
+connecting_layout = NodePath("Layout/Connecting")
+
+[node name="Layout" type="VBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="GameTitle" type="Label" parent="CanvasLayer/Control/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "My Epic Game"
+
+[node name="Buttons" type="VBoxContainer" parent="CanvasLayer/Control/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Host" type="Button" parent="CanvasLayer/Control/Layout/Buttons"]
+layout_mode = 2
+text = "Host"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Layout/Buttons"]
+layout_mode = 2
+
+[node name="Address" type="LineEdit" parent="CanvasLayer/Control/Layout/Buttons/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "127.0.0.1:4200"
+placeholder_text = "Address"
+
+[node name="Join" type="Button" parent="CanvasLayer/Control/Layout/Buttons/HBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Join"
+
+[node name="Connecting" type="VBoxContainer" parent="CanvasLayer/Control/Layout"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Spinner" type="Control" parent="CanvasLayer/Control/Layout/Connecting"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/Layout/Connecting/Spinner"]
+modulate = Color(1, 1, 1, 0.678431)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 15.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(15, 15)
+texture = ExtResource("4_8cgof")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Control/Layout/Connecting/Spinner"]
+libraries = {
+"": SubResource("AnimationLibrary_bhxad")
+}
+autoplay = "spin"
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Layout/Connecting"]
+modulate = Color(1, 1, 1, 0.498039)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Connecting..."
+horizontal_alignment = 1
