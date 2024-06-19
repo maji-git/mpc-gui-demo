@@ -8,15 +8,15 @@
 	"cost": "MIT",
 	"version": "1",
 	"version_string": "1",
-	"icon_url": "https://mpc.himaji.xyz/docs/community/demos/assets/plat-2d.png",
-	"description": "2D Platformer made with MultiPlay Core.",
+	"icon_url": "https://mpc.himaji.xyz/docs/community/demos/assets/gui-demo.png",
+	"description": "Simple GUI Demo for Host/Join networked multiplayer game",
 	"download_branch": "master",
 	"previews": [
 		{
 			"preview_id": "1",
 			"type": "image",
-			"link": "https://mpc.himaji.xyz/docs/community/demos/assets/plat-2d.png",
-			"thumbnail": "https://mpc.himaji.xyz/docs/community/demos/assets/plat-2d.png"
+			"link": "https://mpc.himaji.xyz/docs/community/demos/assets/gui-demo.png",
+			"thumbnail": "https://mpc.himaji.xyz/docs/community/demos/assets/gui-demo.png"
 		}
 	]
 }
