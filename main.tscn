@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cusjf4h56xlxi"]
+[gd_scene load_steps=10 format=3 uid="uid://cusjf4h56xlxi"]
 
 [ext_resource type="Script" path="res://addons/MultiplayCore/MultiPlay.gd" id="1_iqsor"]
 [ext_resource type="Script" path="res://addons/MultiplayCore/net_protocols/ENetProtocol.gd" id="2_tplvf"]
@@ -7,6 +7,32 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_67w23"]
 bg_color = Color(0, 0, 0, 0.247059)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5fmhj"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0.333333)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="Animation" id="Animation_cdskr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
 
 [sub_resource type="Animation" id="Animation_osufp"]
 resource_name = "spin"
@@ -23,21 +49,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, -6.28319]
-}
-
-[sub_resource type="Animation" id="Animation_cdskr"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("TextureRect:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bhxad"]
@@ -57,7 +68,7 @@ script = ExtResource("2_tplvf")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 2
 
-[node name="Control" type="Panel" parent="CanvasLayer" node_paths=PackedStringArray("mpc", "host_btn", "join_btn", "address_bar", "button_layout", "connecting_layout")]
+[node name="Control" type="Panel" parent="CanvasLayer" node_paths=PackedStringArray("mpc", "host_btn", "join_btn", "address_bar", "button_layout", "connecting_layout", "connect_fail_layout", "connect_fail_label")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -71,6 +82,8 @@ join_btn = NodePath("Layout/Buttons/HBoxContainer/Join")
 address_bar = NodePath("Layout/Buttons/HBoxContainer/Address")
 button_layout = NodePath("Layout/Buttons")
 connecting_layout = NodePath("Layout/Connecting")
+connect_fail_layout = NodePath("Layout/ConnectionFailure")
+connect_fail_label = NodePath("Layout/ConnectionFailure/Layout/Reason")
 
 [node name="Layout" type="VBoxContainer" parent="CanvasLayer/Control"]
 layout_mode = 1
@@ -87,6 +100,23 @@ theme_override_constants/separation = 16
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
 text = "My Epic Game"
+
+[node name="ConnectionFailure" type="PanelContainer" parent="CanvasLayer/Control/Layout"]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5fmhj")
+
+[node name="Layout" type="VBoxContainer" parent="CanvasLayer/Control/Layout/ConnectionFailure"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="CanvasLayer/Control/Layout/ConnectionFailure/Layout"]
+layout_mode = 2
+text = "Connection Failed"
+
+[node name="Reason" type="Label" parent="CanvasLayer/Control/Layout/ConnectionFailure/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Reason: ERR"
 
 [node name="Buttons" type="VBoxContainer" parent="CanvasLayer/Control/Layout"]
 layout_mode = 2

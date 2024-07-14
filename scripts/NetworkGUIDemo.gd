@@ -7,6 +7,8 @@ extends Control
 
 @export var button_layout: Control
 @export var connecting_layout: Control
+@export var connect_fail_layout: Control
+@export var connect_fail_label: Label
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -16,6 +18,7 @@ func _ready():
 	
 	# Hide UI if client were connected
 	mpc.connected_to_server.connect(_on_connected_to_server)
+	mpc.connection_error.connect(_on_connection_error)
 
 # When host game requested
 func host_game():
@@ -33,7 +36,20 @@ func join_game():
 func open_connecting_ui():
 	button_layout.visible = false
 	connecting_layout.visible = true
+	connect_fail_layout.visible = false
 
 # Close UI when connected to server
 func _on_connected_to_server(_plr):
 	visible = false
+
+func _on_connection_error(reason: int):
+	# Get value string of reason enum
+	var reason_codename = MultiPlayCore.ConnectionError.keys()[reason]
+	
+	# Reset layout to connect buttons
+	button_layout.visible = true
+	connecting_layout.visible = false
+	
+	# Show reason
+	connect_fail_label.text = "Reason: " + reason_codename
+	connect_fail_layout.visible = true
